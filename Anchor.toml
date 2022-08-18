@@ -2,7 +2,7 @@
 seeds = false
 skip-lint = false
 [programs.devnet]
-p2p_credit_platform = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+p2p_credit_platform = "7nwV8W1EJrsJ2QFdPVuUMbXhWbpRpo82cVfzDiB9LJhc"
 
 [registry]
 url = "https://api.apr.dev"
@@ -13,3 +13,4 @@ wallet = "/home/vladimir/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test-offer = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/test-offer-modify.ts"

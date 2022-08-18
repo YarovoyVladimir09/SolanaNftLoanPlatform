@@ -11,11 +11,11 @@ use open_offer::*;
 use close_offer::*;
 
 
-declare_id!("GREPj1wkRt5dh8NeyFa6AuL8fxsiSVk5eMvKBaW9SbQ3");
+declare_id!("7nwV8W1EJrsJ2QFdPVuUMbXhWbpRpo82cVfzDiB9LJhc");
 
 
 #[program]
-pub mod P2P_credit_platform {
+pub mod p2p_credit_platform {
 
     use super::*;
 
