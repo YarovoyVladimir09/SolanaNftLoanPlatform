@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 import {
   createKeypairFromFile,
 } from './util';
-import { P2pCreditPlatform } from "../target/types/P2P_credit_platform";
+import { CreditPlatform } from "../target/types/credit_platform";
 
 
 describe("sell-nft", async () => {
@@ -19,7 +19,7 @@ describe("sell-nft", async () => {
   //   new anchor.web3.PublicKey("H2UJjAQTuVJYhaBhh6GD2KaprLBTp1vhP2aaHioya5NM"),
   // );
   // ** Comment this to use solpg imported IDL **
-  const program = anchor.workspace.P2pCreditPlatform as anchor.Program<P2pCreditPlatform>;
+  const program = anchor.workspace.CreditPlatform as anchor.Program<CreditPlatform>;
 
 
   it("Sell!", async () => {

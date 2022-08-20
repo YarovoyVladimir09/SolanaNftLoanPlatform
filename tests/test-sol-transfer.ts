@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 import {
   createKeypairFromFile,
 } from './util';
-import { P2pCreditPlatform } from "../target/types/P2P_credit_platform";
+import { CreditPlatform } from "../target/types/credit_platform";
 
 
 describe("token_transfer", async () => {
@@ -12,7 +12,7 @@ describe("token_transfer", async () => {
   const provider = anchor.AnchorProvider.env()
   const wallet = provider.wallet as anchor.Wallet;
   anchor.setProvider(provider);
-  const program = anchor.workspace.P2pCreditPlatform as anchor.Program<P2pCreditPlatform>;
+  const program = anchor.workspace.CreditPlatform as anchor.Program<CreditPlatform>;
 
 
   it("Transfer!", async () => {

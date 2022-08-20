@@ -1,9 +1,9 @@
 import * as anchor from "@project-serum/anchor";
-// ** Comment this to use solpg imported IDL **
+import { Program } from "@project-serum/anchor";
 import {
   createKeypairFromFile,
 } from './util';
-import { P2pCreditPlatform } from "../target/types/p2p_credit_platform";
+import { CreditPlatform } from "../target/types/credit_platform";
 
 
 
@@ -16,20 +16,18 @@ describe("pdas", () => {
   
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  const program = anchor.workspace.P2pCreditPlatform as anchor.Program<P2pCreditPlatform>;
+  //const program = anchor.workspace.P2pCreditPlatform as anchor.Program<P2pCreditPlatform>;
+  const program = anchor.workspace.CreditPlatform as Program<CreditPlatform>;
+  //const programId = new anchor.web3.PublicKey('7nwV8W1EJrsJ2QFdPVuUMbXhWbpRpo82cVfzDiB9LJhc');
   const wallet = provider.wallet as anchor.Wallet;
 
-  async function derivePda(wallet: anchor.web3.PublicKey,
-    creditor: anchor.web3.PublicKey,debtor: anchor.web3.PublicKey,
-    time_mark: number) {
+  async function derivePda(
+        creditor: anchor.web3.PublicKey,debtor: anchor.web3.PublicKey, mint_account: anchor.web3.PublicKey) {
     let [pda, _] = await anchor.web3.PublicKey.findProgramAddress(
       [
-        wallet.toBuffer(),
         creditor.toBuffer(),
-        Buffer.from("_"),
-        debtor.toBuffer(),
-        Buffer.from("_"),
-        Buffer.from(time_mark.toString()),
+        mint_account.toBuffer(),
+        debtor.toBuffer()
       ],
       program.programId
     );
@@ -40,17 +38,21 @@ describe("pdas", () => {
     creditor: anchor.web3.PublicKey,
     debtor: anchor.web3.PublicKey,
     time_mark: number,
-    mint_account: string,
+    mint_account: anchor.web3.PublicKey,
     money_count: number, 
     wallet: anchor.web3.Keypair
   ) {
-    let pda = await derivePda(wallet.publicKey, creditor,
-        debtor, time_mark);
-    await program.methods.openOffer(creditor.toString(),
-        debtor.toString(), new anchor.BN(time_mark), mint_account, money_count)
+    console.log("-----------------derive offer address---------------------------------");
+    let pda = await derivePda(creditor,
+        debtor, mint_account);
+    console.log("-----------------open offer---------------------------------");
+    await program.methods.openOffer(new anchor.BN(time_mark), new anchor.BN(money_count))
       .accounts({
         ledgerAccount: pda,
         wallet: wallet.publicKey,
+        creditor: creditor,
+        debtor: debtor,
+        mintAccount: mint_account
       })
       .signers([wallet])
       .rpc();
@@ -60,17 +62,17 @@ describe("pdas", () => {
     creditor: anchor.web3.PublicKey,
     debtor: anchor.web3.PublicKey,
     time_mark: number,
-    mint_account: string,
+    mint_account: anchor.web3.PublicKey,
     money_count: number,
     wallet: anchor.web3.Keypair
   ) {
 
     console.log("--------------------------------------------------");
     let data;
-    let pda = await derivePda(wallet.publicKey, creditor,
-        debtor, time_mark);
+    let pda = await derivePda(creditor,
+        debtor, mint_account);
 
-    console.log(`Checking if account ${shortKey(pda)} 
+    console.log(`Checking if account ${(pda)} 
     exists for creditor: ${shortKey(creditor)}
     and debtor: ${shortKey(debtor)}`);
     try {
@@ -112,19 +114,22 @@ describe("pdas", () => {
     const creditor: anchor.web3.Keypair = await createKeypairFromFile(
         "/home/vladimir/.config/solana/id2.json"
         );
-        const debtor: anchor.web3.Keypair = await createKeypairFromFile(
+    const debtor: anchor.web3.Keypair = await createKeypairFromFile(
             "/home/vladimir/.config/solana/id3.json"
-            );
+        );
+    const mint: anchor.web3.PublicKey = new anchor.web3.PublicKey(
+          "6K4cqGpWgGk89G7vcDmnufihyzS9sxGcvv3GXSeSv6sC"
+        );
     
 
     //const testKeypair1 = await generateKeypair();
-    await openOffer(creditor.publicKey,
-    debtor.publicKey, 15000, "6K4cqGpWgGk89G7vcDmnufihyzS9sxGcvv3GXSeSv6sC",
-    11.5, wallet.payer);
+    // await openOffer(creditor.publicKey,
+    // debtor.publicKey, 15000, mint,
+    // 1150, wallet.payer);
 
     await closeOffer(creditor.publicKey,
-        debtor.publicKey, 15000, "6K4cqGpWgGk89G7vcDmnufihyzS9sxGcvv3GXSeSv6sC",
-        11.5, wallet.payer)
+        debtor.publicKey, 15000, mint,
+        1150, wallet.payer)
     // await modifyLedger("blue", 2, testKeypair1);
 
     // const testKeypair2 = await generateKeypair();

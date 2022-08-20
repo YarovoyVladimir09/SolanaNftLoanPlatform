@@ -1,7 +1,6 @@
 use {
     anchor_lang::{
-        prelude::*,
-        system_program,
+        prelude::*
     }
 };
 
@@ -28,10 +27,10 @@ pub struct CloseOffer<'info> {
 
 #[account]
 pub struct Ledger {
-    pub creditor: String,
-    pub debtor: String,
-    pub time_mark: i64,
-    pub mint_account: String,
+    pub creditor: Pubkey,
+    pub debtor: Pubkey,
+    pub time_mark: u64,
+    pub mint_account: Pubkey,
     pub moneyback: bool,
-    pub money_count: f64
+    pub money_count: u64
 }

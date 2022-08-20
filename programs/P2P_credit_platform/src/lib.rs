@@ -15,7 +15,7 @@ declare_id!("7nwV8W1EJrsJ2QFdPVuUMbXhWbpRpo82cVfzDiB9LJhc");
 
 
 #[program]
-pub mod p2p_credit_platform {
+pub mod credit_platform {
 
     use super::*;
 
@@ -41,18 +41,12 @@ pub mod p2p_credit_platform {
 
     pub fn open_offer(
         ctx: Context<OpenOffer>,
-        creditor: String,
-        debtor: String,
-        time_mark: i64,
-        mint_account: String,
-        money_count: f64
+        time_mark: u64,
+        money_count: u64
     ) -> Result<()> {
         open_offer::open_offer(
             ctx,
-            creditor,
-            debtor,
             time_mark,
-            mint_account,
             money_count
         )
     }

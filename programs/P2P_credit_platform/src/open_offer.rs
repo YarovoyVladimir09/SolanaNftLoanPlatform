@@ -1,35 +1,21 @@
 use {
     anchor_lang::{
-        prelude::*,
-        system_program,
+        prelude::*
     }
 };
-
-//pub mod sol_transfer;
-//pub mod "../sol_transfer.rs";
-
-// #[path = "./sol_transfer.rs"]
-// pub mod sol_transfer;
-// use sol_transfer::*;
-
-//use crate::sol_transfer;
-
+use std::mem::size_of;
 
 pub fn open_offer(
     ctx: Context<OpenOffer>,
-    creditor: String,
-    debtor: String,
-    time_mark: i64,
-    mint_account: String,
-    //moneyback: bool,
-    money_count: f64
+    time_mark: u64,
+    money_count: u64
 ) -> Result<()> {
-    msg!("Open offer creditor {}, debtor {} ",creditor, debtor);
+    msg!("Open offer creditor {}, debtor {} ",ctx.accounts.creditor.key().to_string(), ctx.accounts.debtor.key().to_string());
     let ledger_account = &mut ctx.accounts.ledger_account;
-    ledger_account.creditor = creditor;
-    ledger_account.debtor = debtor;
+    ledger_account.creditor = ctx.accounts.creditor.key();
+    ledger_account.debtor = ctx.accounts.debtor.key();
     ledger_account.time_mark = time_mark;
-    ledger_account.mint_account = mint_account;
+    ledger_account.mint_account = ctx.accounts.mint_account.key();
     ledger_account.moneyback = false;
     ledger_account.money_count = money_count;
     
@@ -40,23 +26,15 @@ pub fn open_offer(
 
 
 #[derive(Accounts)]
-#[instruction(
-    creditor: String,
-    debtor: String,
-    time_mark: i64,
-)]
 pub struct OpenOffer<'info> {
     #[account(
         init,
         payer = wallet,
-        space = 8 + 113,
+        space = 8 + size_of::<Ledger>(),
         seeds = [
-            wallet.key().as_ref(),
-            creditor.as_ref(),
-            b"_",
-            debtor.as_ref(),
-            b"_",
-            time_mark.to_string().as_ref()
+            creditor.key().as_ref(),
+            mint_account.key().as_ref(),
+            debtor.key().as_ref(),
         ],
         bump
     )]
@@ -64,15 +42,21 @@ pub struct OpenOffer<'info> {
     #[account(mut)]
     pub wallet: Signer<'info>,
     pub system_program: Program<'info, System>,
+/// CHECK: This is not dangerous because we don't read or write from this account
+    pub creditor: AccountInfo<'info>,
+    /// CHECK: This is not dangerous because we don't read or write from this account
+    pub debtor: AccountInfo<'info>,
+        /// CHECK: This is not dangerous because we don't read or write from this account
+    pub mint_account: AccountInfo<'info>
 
 }
 
 #[account]
 pub struct Ledger {
-    pub creditor: String,
-    pub debtor: String,
-    pub time_mark: i64,
-    pub mint_account: String,
+    pub creditor: Pubkey,
+    pub debtor: Pubkey,
+    pub time_mark: u64,
+    pub mint_account: Pubkey,
     pub moneyback: bool,
-    pub money_count: f64
+    pub money_count: u64
 }
