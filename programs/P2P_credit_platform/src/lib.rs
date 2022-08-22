@@ -2,13 +2,13 @@ use anchor_lang::prelude::*;
 
 pub mod nft_transfer;
 pub mod sol_transfer;
-pub mod open_offer;
-pub mod close_offer;
+pub mod offer;
+// pub mod close_offer;
 
 use nft_transfer::*;
 use sol_transfer::*;
-use open_offer::*;
-use close_offer::*;
+use offer::*;
+//use close_offer::*;
 
 
 declare_id!("7nwV8W1EJrsJ2QFdPVuUMbXhWbpRpo82cVfzDiB9LJhc");
@@ -44,18 +44,32 @@ pub mod credit_platform {
         time_mark: u64,
         money_count: u64
     ) -> Result<()> {
-        open_offer::open_offer(
+        offer::open_offer(
             ctx,
             time_mark,
             money_count
         )
     }
 
-    pub fn close_offer(
-        ctx: Context<CloseOffer>
+    pub fn modify_status_offer(
+        ctx: Context<ModifyOffer>,
+        status: u8
     ) -> Result<()> {
-        close_offer::close_offer(
-            ctx
+        offer::modify_status_offer(
+            ctx,
+            status
+        )
+    }
+
+    pub fn modify_amount_offer(
+        ctx: Context<ModifyOffer>,
+        time_mark: u64,
+        money_count: u64,
+    ) -> Result<()> {
+        offer::modify_amount_offer(
+            ctx,
+            time_mark,
+            money_count
         )
     }
 }

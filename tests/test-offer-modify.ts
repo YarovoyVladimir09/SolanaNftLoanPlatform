@@ -58,13 +58,14 @@ describe("pdas", () => {
       .rpc();
   }
 
-  async function closeOffer(
+  async function modifyOfferStatus(
     creditor: anchor.web3.PublicKey,
     debtor: anchor.web3.PublicKey,
     time_mark: number,
     mint_account: anchor.web3.PublicKey,
     money_count: number,
-    wallet: anchor.web3.Keypair
+    wallet: anchor.web3.Keypair,
+    status:number
   ) {
 
     console.log("--------------------------------------------------");
@@ -92,9 +93,9 @@ describe("pdas", () => {
     console.log("Data:")
     // console.log(`    Color: ${data.color}   Balance: ${data.balance}`);
     // console.log(`Modifying balance of ${data.color} from ${data.balance} to ${newBalance}`);
-    console.log(` Money back?: ${data.moneyback}`);
+    console.log(` Money back?: ${data.status}`);
 
-    await program.methods.closeOffer()
+    await program.methods.modifyStatusOffer(status)
       .accounts({
         ledgerAccount: pda,
         wallet: wallet.publicKey,
@@ -104,7 +105,7 @@ describe("pdas", () => {
 
     data = await program.account.ledger.fetch(pda);
     console.log("New Data:")
-    console.log(` Money back?: ${data.moneyback}`);
+    console.log(` Money back?: ${data.status}`);
     console.log("Success.");
   }
 
@@ -127,9 +128,16 @@ describe("pdas", () => {
     // debtor.publicKey, 15000, mint,
     // 1150, wallet.payer);
 
-    await closeOffer(creditor.publicKey,
+    await modifyOfferStatus(creditor.publicKey,
         debtor.publicKey, 15000, mint,
-        1150, wallet.payer)
+        1150, wallet.payer, 0);
+    await modifyOfferStatus(creditor.publicKey,
+          debtor.publicKey, 15000, mint,
+          1150, wallet.payer, 1)
+
+    await modifyOfferStatus(creditor.publicKey,
+            debtor.publicKey, 15000, mint,
+            1150, wallet.payer, 5)
     // await modifyLedger("blue", 2, testKeypair1);
 
     // const testKeypair2 = await generateKeypair();
