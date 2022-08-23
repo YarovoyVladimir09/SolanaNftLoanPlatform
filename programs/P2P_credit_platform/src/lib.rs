@@ -3,12 +3,12 @@ use anchor_lang::prelude::*;
 pub mod nft_transfer;
 pub mod sol_transfer;
 pub mod offer;
-// pub mod close_offer;
+pub mod accounting_book;
 
 use nft_transfer::*;
 use sol_transfer::*;
 use offer::*;
-//use close_offer::*;
+use accounting_book::*;
 
 
 declare_id!("7nwV8W1EJrsJ2QFdPVuUMbXhWbpRpo82cVfzDiB9LJhc");
@@ -70,6 +70,22 @@ pub mod credit_platform {
             ctx,
             time_mark,
             money_count
+        )
+    }
+
+    pub fn open_book(
+        ctx: Context<OpenBook>
+    ) -> Result<()> {
+        accounting_book::open_book(
+            ctx
+        )
+    }
+
+    pub fn modify_book(
+        ctx: Context<ModifyBook>
+    ) -> Result<()> {
+        accounting_book::modify_book(
+            ctx
         )
     }
 }

@@ -14,3 +14,4 @@ wallet = "/home/vladimir/.config/solana/id.json"
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
 test-offer = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/test-offer-modify.ts"
+test-book = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/test-book.ts"
