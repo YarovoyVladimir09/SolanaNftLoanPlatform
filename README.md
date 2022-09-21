@@ -1,10 +1,10 @@
 # P2P_credit_platform (Solana)
-Блокчейн инструменты для реализации Р2Р кредитования, где в качестве залога выступает NFT
-Реализован такой функционал как: 
-- Перевод NFT 
-- Перевод SOL
-- Создание Ledger аккаунта (адреса должника и кредитора, адрес минт аккаунта, временная метка, количество одолженных денег, статус Ledger аккаунта)
-- Создание структуры для хранения всех сделок у должников и кредиторов  
+Blockchain tools for the implementation of P2P lending, where NFT acts as collateral, such functionality as:
+
+-NFT Translation
+-Translation of SOL
+-Creating a Ledger account (debtor and creditor addresses, mint account address, timestamp, amount of money borrowed, Ledger account status)
+-Creating a structure for storing all transactions with debtors and creditors
 
 Offer Scheme
 
@@ -14,6 +14,6 @@ Dept Returning Scheme
 
 ![deptReturn](https://user-images.githubusercontent.com/94742842/187074460-d97a9e74-3ef3-436d-8838-c56f68f67dda.jpg)
 
-- Для реализации необходимо задеплоить программу от своего кошелька
+- To implement it, you need to deploy the program from your wallet
 - Rust, TypeScript
 - Anchor, Solana
