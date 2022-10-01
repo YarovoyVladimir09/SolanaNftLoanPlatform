@@ -1,8 +1,8 @@
 # P2P_credit_platform (Solana)
 Blockchain tools for the implementation of P2P lending, where NFT acts as collateral, such functionality as:
 
-- NFT Translation
-- Translation of SOL
+- NFT transfer
+- Transfer of SOL
 - Creating a Ledger account (debtor and creditor addresses, mint account address, timestamp, amount of money borrowed, Ledger account status)
 - Creating a structure for storing all transactions with debtors and creditors
 
